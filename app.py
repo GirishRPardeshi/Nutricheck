@@ -5,6 +5,7 @@ from ai_suggester import get_ai_suggestion
 from qr_scanner import scan_qr_code
 import pandas as pd
 from report_generator import generate_pdf_report
+import os
 
 st.set_page_config(page_title="NutriCheck", layout="centered")
 
