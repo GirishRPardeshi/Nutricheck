@@ -4,6 +4,8 @@ from nutrition_analysis import analyze_nutrition
 from ai_suggester import get_ai_suggestion
 from qr_scanner import scan_qr_code
 import pandas as pd
+from report_generator import generate_pdf_report
+import os
 
 st.set_page_config(page_title="NutriCheck", layout="centered")
 
@@ -64,4 +66,15 @@ elif menu == "View Analysis":
 elif menu == "Download Report":
     st.header("📄 Download Nutrition Report")
     st.write("Coming soon... (PDF generator)")
+    if "product_data" in st.session_state:
+        data = st.session_state["product_data"]
+        rating = analyze_nutrition(data)
+        suggestion = get_ai_suggestion(data)
 
+        if st.button("Generate PDF Report"):
+            filepath = generate_pdf_report(data, rating, suggestion)
+            st.success("✅ Report generated successfully!")
+            with open(filepath, "rb") as f:
+                st.download_button("📥 Download Report", f, file_name=os.path.basename(filepath))
+    else:
+        st.warning("Please analyze a product first.")
